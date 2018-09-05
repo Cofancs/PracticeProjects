@@ -1,7 +1,6 @@
 package com.cofancs;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.DisplayName;
@@ -41,15 +40,15 @@ public class SortingAlgorithmTest {
     @DisplayName("╯°□°）╯'abc'")
     public void sortNullsToTheEndThrowsExceptionForNotCorrectInputABC(){
         String[] inputArray= {"4","-","bf"};
-        String[] result=underTest.sortNullsToTheEnd(inputArray);
+        underTest.sortNullsToTheEnd(inputArray);
         assertThrows(IllegalArgumentException.class,()->{throw new IllegalArgumentException(SortingAlgorithm.INPUT_CAN_CONTAINS_DIGITS_AND_A_SINGLE_CHARACTERS);});
     }
 
     @Test
-    @DisplayName("╯°□°）╯'abc'")
+    @DisplayName("╯°□°）╯'abc2'")
     public void sortNullsToTheEndThrowsExceptionForNotCorrectInputDoubleDash(){
         String[] inputArray= {"43","4","--","-"};
-        String[] result=underTest.sortNullsToTheEnd(inputArray);
+        underTest.sortNullsToTheEnd(inputArray);
         assertThrows(IllegalArgumentException.class,()->{throw new IllegalArgumentException(SortingAlgorithm.INPUT_CAN_CONTAINS_DIGITS_AND_A_SINGLE_CHARACTERS);});
     }
 }
