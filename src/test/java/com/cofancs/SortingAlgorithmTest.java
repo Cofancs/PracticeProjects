@@ -8,13 +8,21 @@ import org.junit.jupiter.api.Test;
 
 public class SortingAlgorithmTest {
 
-
     SortingAlgorithm underTest = new SortingAlgorithm();
 
     @Test
     @DisplayName("╯°□°）╯")
     public void sortNullsToTheEndShouldReturnCorrectOrder(){
         String[] inputArray= {"4","-","8","-","-","3"};
+        String[] result=underTest.sortNullsToTheEnd(inputArray);
+        String[] expected = {"4","8","3","-","-","-",};
+        assertArrayEquals(expected,result);
+    }
+
+    @Test
+    @DisplayName("╯°□°）╯already in correct order")
+    public void sortNullsToTheEndThatIsAlreadyInCorrectOrder(){
+        String[] inputArray= {"4","8","3","-","-","-",};
         String[] result=underTest.sortNullsToTheEnd(inputArray);
         String[] expected = {"4","8","3","-","-","-",};
         assertArrayEquals(expected,result);
@@ -30,10 +38,28 @@ public class SortingAlgorithmTest {
     }
 
     @Test
+    @DisplayName("╯°□°）╯-----")
+    public void sortNullsToTheEndShouldReturnCorrectOrderForInputWhereAreOnlyEmptyElements(){
+        String[] inputArray= {"-","-","-","-","-","-","-","-","-"};
+        String[] result=underTest.sortNullsToTheEnd(inputArray);
+        String[] expected = {"-","-","-","-","-","-","-","-","-"};
+        assertArrayEquals(expected,result);
+    }
+
+    @Test
+    @DisplayName("╯°□°）╯12324534")
+    public void sortNullsToTheEndShouldReturnCorrectOrderForInputWhereAreOnlyNumbersElements(){
+        String[] inputArray= {"1","2","3","5","3","6","8","4","2"};
+        String[] result=underTest.sortNullsToTheEnd(inputArray);
+        String[] expected = {"1","2","3","5","3","6","8","4","2"};
+        assertArrayEquals(expected,result);
+    }
+
+    @Test
     @DisplayName("╯°□°）╯'NULL'")
     public void sortNullsToTheEndThrowsExceptionForNull(){
         String[] inputArray= {};
-        String[] result=underTest.sortNullsToTheEnd(inputArray);
+        underTest.sortNullsToTheEnd(inputArray);
         assertThrows(IllegalArgumentException.class,()->{throw new IllegalArgumentException(SortingAlgorithm.INPUT_ARRAY_SHOULDN_T_BE_NULL);});
     }
     @Test

@@ -10,32 +10,35 @@ public class SortingAlgorithm {
 
     public  String[] sortNullsToTheEnd(String[] inputArray){
         checkCorrectInput(inputArray);
-        String[] result = new String[inputArray.length];
-        doSortingTheEmptyCharachters(inputArray, result);
+        String[] result =doSortingTheEmptyCharacters(inputArray);
         return result;
     }
 
-    private void doSortingTheEmptyCharachters(String[] inputArray, String[] result) {
-        int index=0;
-        int fromBack=result.length-1;
-        for(int i=0;i<inputArray.length;i++){
+    private String[] doSortingTheEmptyCharacters(String[] inputArray) {
+        for(int i=0;i<inputArray.length-1;i++){
             if(inputArray[i].equals(DASH)){
-                result[fromBack]=inputArray[i];
-                fromBack--;
-            }else{
-                result[index]=inputArray[i];
-                index++;
+                String element=inputArray[i];
+                for(int j = i+1; j<inputArray.length;j++){
+                    if(!inputArray[j].equals(DASH)){
+                        inputArray[i]=inputArray[j];
+                        inputArray[j]=element;
+                        break;
+                    }
+                }
+
             }
+
         }
+        return inputArray;
     }
 
     private void checkCorrectInput(String[] inputArray) {
         checkIfNull(inputArray);
-        checkIfTheElementsHasAnInvalidCharachter(inputArray);
+        checkIfTheElementsHasAnInvalidCharacter(inputArray);
     }
 
-    private void checkIfTheElementsHasAnInvalidCharachter(String[] inputArray) {
-        if(Arrays.stream(inputArray).anyMatch(s -> s.matches("^([0-9]+ | [-]])"))){
+    private void checkIfTheElementsHasAnInvalidCharacter(String[] inputArray) {
+        if(Arrays.stream(inputArray).anyMatch(s -> s.matches("^([0-9]+ | [-])"))){
             throw new IllegalArgumentException(INPUT_CAN_CONTAINS_DIGITS_AND_A_SINGLE_CHARACTERS);
         }
     }
