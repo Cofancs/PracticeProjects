@@ -13,26 +13,9 @@ public class SortingAlgorithm {
         return !((object == null) || (object instanceof Integer) || ((object instanceof Character) && object.equals(DASH_CHAR)) || ((object instanceof String) && object.equals(DASH)));
     }
 
-    public Object[] sortNullsToTheEnd(Object[] inputArray) throws IllegalArgumentException {
+    public Object[] checkInputThenSortEmptyToTheEnd(Object[] inputArray) throws IllegalArgumentException {
         checkCorrectInput(inputArray);
-        Object[] result = doSortingTheEmptyCharacters(inputArray);
-        return result;
-    }
-
-    private Object[] doSortingTheEmptyCharacters(Object[] inputArray) {
-        for (int i = 0; i < inputArray.length; i++) {
-            if (inputArray[i] == null || inputArray[i].equals(DASH) || inputArray[i].equals(DASH_CHAR)) {
-                inputArray[i] = null;
-                for (int j = i + 1; j < inputArray.length; j++) {
-                    if (!(inputArray[j] == null || inputArray[j].equals(DASH) || inputArray[j].equals(DASH_CHAR))) {
-                        inputArray[i] = inputArray[j];
-                        inputArray[j] = null;
-                        break;
-                    }
-                }
-            }
-        }
-        return inputArray;
+        return sortEmptyToTheEnd(inputArray);
     }
 
     private void checkCorrectInput(Object[] inputArray) {
@@ -53,4 +36,43 @@ public class SortingAlgorithm {
             throw new IllegalArgumentException(INPUT_ARRAY_SHOULDN_T_BE_NULL);
         }
     }
+
+    private Object[] sortEmptyToTheEnd(Object[] inputArray) {
+        loopThroughElementsToSort(inputArray);
+        return inputArray;
+    }
+
+    private void loopThroughElementsToSort(Object[] inputArray) {
+        for (int i = 0; i < inputArray.length; i++) {
+            whenEmptyCheckForNextElementThenExchange(inputArray, i);
+        }
+    }
+
+    private void whenEmptyCheckForNextElementThenExchange(Object[] inputArray, int i) {
+        if (isEmptyValue(inputArray[i])) {
+            inputArray[i] = null;
+            loopThroughFollowingElementsToExchangeValue(inputArray, i);
+        }
+    }
+
+    private void loopThroughFollowingElementsToExchangeValue(Object[] inputArray, int i) {
+        for (int j = i + 1; j < inputArray.length; j++) {
+            if (exchangeValuesWhenNextIsNumber(inputArray, i, j)) break;
+        }
+    }
+
+    private boolean exchangeValuesWhenNextIsNumber(Object[] inputArray, int i, int j) {
+        if (!(isEmptyValue(inputArray[j]))) {
+            inputArray[i] = inputArray[j];
+            inputArray[j] = null;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isEmptyValue(Object o) {
+        return o == null || o.equals(DASH) || o.equals(DASH_CHAR);
+    }
+
+
 }
