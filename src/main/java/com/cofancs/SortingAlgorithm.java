@@ -7,42 +7,71 @@ public class SortingAlgorithm {
     public static final String INPUT_ARRAY_SHOULDN_T_BE_NULL = "inputArray shouldn't be null";
     public static final String INPUT_CAN_CONTAINS_DIGITS_AND_A_SINGLE_CHARACTERS = "Input can contains digits and a single \"-\" characters! ";
     public static final String DASH = "-";
+    public static final Character DASH_CHAR = '-';
 
-    public  String[] sortNullsToTheEnd(String[] inputArray){
+
+    private static boolean testIfContainsInvalidObjects(Object object) {
+        return !((object == null) || (object instanceof Integer) || ((object instanceof Character) && object.equals(DASH_CHAR)) || ((object instanceof String) && object.equals(DASH)));
+    }
+
+    public Object[] checkInputThenSortEmptyToTheEnd(Object[] inputArray) throws IllegalArgumentException {
         checkCorrectInput(inputArray);
-        String[] result = new String[inputArray.length];
-        doSortingTheEmptyCharachters(inputArray, result);
-        return result;
+        return sortEmptyToTheEnd(inputArray);
     }
 
-    private void doSortingTheEmptyCharachters(String[] inputArray, String[] result) {
-        int index=0;
-        int fromBack=result.length-1;
-        for(int i=0;i<inputArray.length;i++){
-            if(inputArray[i].equals(DASH)){
-                result[fromBack]=inputArray[i];
-                fromBack--;
-            }else{
-                result[index]=inputArray[i];
-                index++;
-            }
-        }
-    }
-
-    private void checkCorrectInput(String[] inputArray) {
+    private void checkCorrectInput(Object[] inputArray) {
         checkIfNull(inputArray);
-        checkIfTheElementsHasAnInvalidCharachter(inputArray);
+        checkIfTheElementsHasAnInvalidCharacter(inputArray);
     }
 
-    private void checkIfTheElementsHasAnInvalidCharachter(String[] inputArray) {
-        if(Arrays.stream(inputArray).anyMatch(s -> s.matches("^([0-9]+ | [-]])"))){
-            throw new IllegalArgumentException(INPUT_CAN_CONTAINS_DIGITS_AND_A_SINGLE_CHARACTERS);
-        }
-    }
-
-    private void checkIfNull(String[] inputArray) {
-        if(inputArray == null){
+    private void checkIfNull(Object[] inputArray) throws IllegalArgumentException {
+        if (inputArray == null || inputArray.length <= 0) {
             throw new IllegalArgumentException(INPUT_ARRAY_SHOULDN_T_BE_NULL);
         }
+    }
+
+    private void checkIfTheElementsHasAnInvalidCharacter(Object[] inputArray) throws IllegalArgumentException {
+        Arrays.stream(inputArray).filter(
+                SortingAlgorithm::testIfContainsInvalidObjects)
+                .forEach(object -> {
+                    throw new IllegalArgumentException(INPUT_CAN_CONTAINS_DIGITS_AND_A_SINGLE_CHARACTERS);
+                });
+    }
+
+    private Object[] sortEmptyToTheEnd(Object[] inputArray) {
+        loopThroughElementsToSort(inputArray);
+        return inputArray;
+    }
+
+    private void loopThroughElementsToSort(Object[] inputArray) {
+        for (int i = 0; i < inputArray.length; i++) {
+            whenEmptyCheckForNextElementThenExchange(inputArray, i);
+        }
+    }
+
+    private void whenEmptyCheckForNextElementThenExchange(Object[] inputArray, int i) {
+        if (isEmptyValue(inputArray[i])) {
+            inputArray[i] = null;
+            loopThroughFollowingElementsToExchangeValue(inputArray, i);
+        }
+    }
+
+    private boolean isEmptyValue(Object o) {
+        return o == null || o.equals(DASH) || o.equals(DASH_CHAR);
+    }
+
+    private void loopThroughFollowingElementsToExchangeValue(Object[] inputArray, int i) {
+        for (int j = i + 1; j < inputArray.length; j++) {
+            if (exchangeValuesWhenNextIsNumber(inputArray, i, j)) break;
+        }
+    }
+
+    private boolean exchangeValuesWhenNextIsNumber(Object[] inputArray, int i, int j) {
+        if (!(isEmptyValue(inputArray[j]))) {
+            inputArray[i] = inputArray[j];
+            inputArray[j] = null;
+            return true;
+        }
+        return false;
     }
 }
