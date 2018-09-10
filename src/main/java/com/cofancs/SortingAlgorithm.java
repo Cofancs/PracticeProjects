@@ -9,6 +9,7 @@ public class SortingAlgorithm {
     public static final String DASH = "-";
     public static final Character DASH_CHAR = '-';
 
+
     private static boolean testIfContainsInvalidObjects(Object object) {
         return !((object == null) || (object instanceof Integer) || ((object instanceof Character) && object.equals(DASH_CHAR)) || ((object instanceof String) && object.equals(DASH)));
     }
@@ -23,18 +24,18 @@ public class SortingAlgorithm {
         checkIfTheElementsHasAnInvalidCharacter(inputArray);
     }
 
+    private void checkIfNull(Object[] inputArray) throws IllegalArgumentException {
+        if (inputArray == null || inputArray.length <= 0) {
+            throw new IllegalArgumentException(INPUT_ARRAY_SHOULDN_T_BE_NULL);
+        }
+    }
+
     private void checkIfTheElementsHasAnInvalidCharacter(Object[] inputArray) throws IllegalArgumentException {
         Arrays.stream(inputArray).filter(
                 SortingAlgorithm::testIfContainsInvalidObjects)
                 .forEach(object -> {
                     throw new IllegalArgumentException(INPUT_CAN_CONTAINS_DIGITS_AND_A_SINGLE_CHARACTERS);
                 });
-    }
-
-    private void checkIfNull(Object[] inputArray) throws IllegalArgumentException {
-        if (inputArray == null || inputArray.length <= 0) {
-            throw new IllegalArgumentException(INPUT_ARRAY_SHOULDN_T_BE_NULL);
-        }
     }
 
     private Object[] sortEmptyToTheEnd(Object[] inputArray) {
@@ -55,6 +56,10 @@ public class SortingAlgorithm {
         }
     }
 
+    private boolean isEmptyValue(Object o) {
+        return o == null || o.equals(DASH) || o.equals(DASH_CHAR);
+    }
+
     private void loopThroughFollowingElementsToExchangeValue(Object[] inputArray, int i) {
         for (int j = i + 1; j < inputArray.length; j++) {
             if (exchangeValuesWhenNextIsNumber(inputArray, i, j)) break;
@@ -69,10 +74,4 @@ public class SortingAlgorithm {
         }
         return false;
     }
-
-    private boolean isEmptyValue(Object o) {
-        return o == null || o.equals(DASH) || o.equals(DASH_CHAR);
-    }
-
-
 }
